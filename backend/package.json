@@ -2,6 +2,7 @@
   "name": "hono",
   "type": "module",
   "dependencies": {
+    "cors": "^2.8.6",
     "hono": "^4.12.26",
     "mongodb": "^7.3.0",
     "mongoose": "^9.7.1"
