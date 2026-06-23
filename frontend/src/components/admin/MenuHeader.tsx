@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import type { CategoryType } from "@/types/common";
 import { Skeleton } from "@/components/ui/skeleton";
-const Page = () => {
+export const MenuHeader = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [newCategory, setNewCategory] = useState("");
   const [loading, setLoading] = useState(true);
@@ -104,4 +104,3 @@ const Page = () => {
     </div>
   );
 };
-export default Page;
