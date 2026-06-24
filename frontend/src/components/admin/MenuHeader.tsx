@@ -50,7 +50,7 @@ export const MenuHeader = () => {
     );
   }
   return (
-    <div className="bg-white h-auto border rounded p-5 flex flex-col gap-3">
+    <div className="bg-white w-full h-auto border rounded p-5 flex flex-col gap-3">
       <h1 className="text-xl font-semibold">Dishes category</h1>
       <div className="flex gap-3 flex-wrap">
         <div className="border rounded-2xl px-4 py-2 text-sm font-medium">
