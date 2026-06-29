@@ -26,7 +26,7 @@ export const MenuHeader = () => {
     setLoading(false);
   };
   const createCategories = async () => {
-    const response = await axios.post("http://localhost:3001/category", {
+    await axios.post("http://localhost:3001/category", {
       categoryName: newCategory,
     });
     await getCategories();

@@ -4,10 +4,26 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { FoodsCard } from "./FoodsCard";
 import { Plus } from "lucide-react";
-export const MenuFoods = () => {
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+export const MenuFoods = (categoryId: string) => {
   const [foods, setFoods] = useState<foodType[]>([]);
-  const [newFoods, setNewFoods] = useState([]);
+  const [newFoods, setNewFoods] = useState<foodType[]>([]);
   const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [foodName, setFoodname] = useState("");
+  const [price, setPrice] = useState("");
+  const [ingredients, setIngredients] = useState("");
+
   const getCategories = async () => {
     const response = await axios.get("http://localhost:3001/category");
     console.log("getfoots res", response);
@@ -16,6 +32,29 @@ export const MenuFoods = () => {
   const getFoods = async () => {
     const response = await axios.get("http://localhost:3001/food");
     setFoods(response.data.foods);
+  };
+
+  const createFood = async () => {
+    await axios.post("http://localhost:3001/food", {
+      foodName: foodName,
+      price: price,
+      ingredients: ingredients,
+      category: categoryId,
+    });
+    await getFoods();
+  };
+
+  const handleFoodName = (e: any) => {
+    const { value } = e.target;
+    setFoodname(value);
+  };
+  const handlePrice = (e: any) => {
+    const { value } = e.target;
+    setPrice(value);
+  };
+  const handleIngredients = (e: any) => {
+    const { value } = e.target;
+    setIngredients(value);
   };
   useEffect(() => {
     getFoods();
@@ -27,17 +66,74 @@ export const MenuFoods = () => {
         return (
           <div key={category._id} className="bg-white border rounded-xl p-5">
             <p>{category.categoryName}</p>
-            <div className="flex gap-5">
-              <div className="w-[270px] h-[240px] border border-red-500 border-dashed rounded-2xl p-2 flex flex-col justify-center items-center">
-                <button className="bg-red-700 border rounded-[100px] p-3">
-                  <Plus className="text-white w-3 h-3" />
-                </button>
-                <p className="text-center">
-                  Add new dishes to <br />
-                  {category.categoryName}
-                </p>
-              </div>
+            <div className="flex gap-4">
+              <Dialog key={category._id}>
+                <DialogTrigger asChild>
+                  <div className="w-[270px] h-[240px] border border-red-500 border-dashed rounded-2xl p-2 flex flex-col justify-center items-center">
+                    <button className="bg-red-700 border rounded-[100px] p-3">
+                      <Plus className="text-white w-3 h-3" />
+                    </button>
+                    <p className="text-center">
+                      Add new dishes to <br />
+                      {category.categoryName}
+                    </p>
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-sm flex flex-col gap-5">
+                  <DialogHeader>
+                    <DialogTitle className="text-lg font-semibold">
+                      Add new Dish to {category.categoryName}
+                    </DialogTitle>
+                    <div className="flex justify-between">
+                      <div>
+                        <label className="font-medium">Food Name</label>
+                        <input
+                          onChange={handleFoodName}
+                          type="input"
+                          className="border rounded-sm h-[22]"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-medium">Food Price</label>
+                        <input
+                          onChange={handlePrice}
+                          type="input"
+                          className="border rounded-sm"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex flex-col">
+                        <label className="font-medium">Ingredients</label>
+                        <input
+                          onChange={handleIngredients}
+                          type="input"
+                          className="border rounded-sm w-full h-22"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex flex-col">
+                        <label className="font-medium">Food image</label>
+                        <div className="w-full border border-dashed bg-blue-200 h-24 flex justify-center items-center">
+                          <input
+                            type="file"
+                            className="border-dashed rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </DialogHeader>
 
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button type="submit" onClick={createFood}>
+                        Add dish
+                      </Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
               <FoodsCard />
             </div>
           </div>

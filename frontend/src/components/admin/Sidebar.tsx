@@ -1,6 +1,6 @@
 import { LayoutDashboard } from "lucide-react";
 import { Truck } from "lucide-react";
-export const Navbar = () => {
+export const Sidebar = () => {
   return (
     <div className="w-10% h-screen p-10 flex flex-col gap-10 bg-white">
       <div>

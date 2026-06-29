@@ -26,6 +26,9 @@ export const putFood = async (c: Context) => {
   const input = await c.req.json();
   const response = await FoodModel.findByIdAndUpdate(id, {
     foodname: input.foodname,
+    price: input.foodprice,
+    ingredients: input.foodingredients,
+    category: input.category,
   });
   return c.json({
     message: "succesfully updated",
