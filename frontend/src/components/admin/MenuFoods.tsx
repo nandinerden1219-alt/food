@@ -1,7 +1,7 @@
 "use client";
 import { CategoryType, foodType } from "@/types/common";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { FoodsCard } from "./FoodsCard";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { uploadFile } from "@/lib/uploadFile";
 
 export const MenuFoods = (categoryId: string) => {
   const [foods, setFoods] = useState<foodType[]>([]);
@@ -23,6 +24,7 @@ export const MenuFoods = (categoryId: string) => {
   const [foodName, setFoodname] = useState("");
   const [price, setPrice] = useState("");
   const [ingredients, setIngredients] = useState("");
+  const [file, setFile] = useState<File>();
 
   const getCategories = async () => {
     const response = await axios.get("http://localhost:3001/category");
@@ -35,6 +37,11 @@ export const MenuFoods = (categoryId: string) => {
   };
 
   const createFood = async () => {
+    if (!file) {
+      console.log("zurgaa oruul");
+      return;
+    }
+    const imageUrl = await uploadFile(file);
     await axios.post("http://localhost:3001/food", {
       foodName: foodName,
       price: price,
@@ -55,6 +62,10 @@ export const MenuFoods = (categoryId: string) => {
   const handleIngredients = (e: any) => {
     const { value } = e.target;
     setIngredients(value);
+  };
+  const handleFile = (e: any) => {
+    const uploadedFile = e.target.files;
+    setFile(uploadedFile);
   };
   useEffect(() => {
     getFoods();
@@ -117,6 +128,7 @@ export const MenuFoods = (categoryId: string) => {
                         <label className="font-medium">Food image</label>
                         <div className="w-full border border-dashed bg-blue-200 h-24 flex justify-center items-center">
                           <input
+                            onChange={handleFile}
                             type="file"
                             className="border-dashed rounded-2xl"
                           />
