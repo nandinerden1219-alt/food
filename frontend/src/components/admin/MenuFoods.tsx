@@ -1,7 +1,7 @@
 "use client";
 import { CategoryType, foodType } from "@/types/common";
 import axios from "axios";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { FoodsCard } from "./FoodsCard";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -47,6 +46,7 @@ export const MenuFoods = (categoryId: string) => {
       price: price,
       ingredients: ingredients,
       category: categoryId,
+      image: imageUrl,
     });
     await getFoods();
   };
@@ -64,7 +64,7 @@ export const MenuFoods = (categoryId: string) => {
     setIngredients(value);
   };
   const handleFile = (e: any) => {
-    const uploadedFile = e.target.files;
+    const uploadedFile = e.target.files[0];
     setFile(uploadedFile);
   };
   useEffect(() => {
@@ -139,7 +139,7 @@ export const MenuFoods = (categoryId: string) => {
 
                   <DialogFooter>
                     <DialogClose asChild>
-                      <Button type="submit" onClick={createFood}>
+                      <Button type="button" onClick={createFood}>
                         Add dish
                       </Button>
                     </DialogClose>
